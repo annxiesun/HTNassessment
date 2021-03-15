@@ -1,12 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
 import EventPage from './components/events/EventPage'
-function App() {
-  return (
-    <div className="App">
-        <EventPage/>
-    </div>
-  );
+import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch
+} from "react-router-dom";
+import Login from "./components/login/Login"
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(localStorage.getItem('login'))
+    this.state = {
+      logged_in: JSON.parse(localStorage.getItem('login'))
+    }
+    this.login=this.login.bind(this);
+  }
+
+  login(bool) {
+    localStorage.setItem( 'login', bool);
+    console.log(localStorage.getItem('login'))
+    this.setState({logged_in: bool});
+  }
+
+  render() {
+    return (
+      <Router>
+        <Link to="/">Home</Link>
+        <Link to="/topics">Topics</Link>
+
+        <Switch>
+          <Route exact path="/">
+            <Login login={this.login}/>
+          </Route>
+          <Route path="/topics">
+            <EventPage logged_in={this.state.logged_in}/>
+            <button onClick={()=>{this.login(false)}}>Logout</button>
+          </Route>
+        </Switch>
+      </Router>
+
+    );
+  }
 }
 
 export default App;
