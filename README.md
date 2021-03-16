@@ -1,70 +1,15 @@
-# Getting Started with Create React App
+### Question 1
+I used React in my application because I like how it makes it simple to think of the site in smaller pieces & update the screen as needed. For the functionality and development, I first break down a page into multiple components. For example in the page that shows all the events, I broke it down into a card-view version that shows the basic information & a sub-page that shows all the information.  I also think about parent-child relationships & where each state should be located so it can be passed down. For example, the logged_in state is at the App level (the highest), because it affects both the login page & the event page. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+One thing I'm really proud of is the layout of the event page. I think the filters on the side make it easy for the user to see all the events while searching. Each card also has the most relevant information while not being too crowded. Another small thing I would like to point out is that the event types are dynamic, so if you would add another event type, let's say "Contest", it would automatically appear in the input box to filter by. 
 
-## Available Scripts
+A problem I encountered while developing this project was in the filtering functionality. I first was trying to add a state 'shown_events' so the 'all_events' state was not modified. This ended up being hard because my events were being sorted inside the EventContainer component. I solved this by making 'filter' a state and passing that to the EventContainer so that it could filter & sort in the same place.
 
-In the project directory, you can run:
+### Question 2
+To scale this project, I first would add pagination for the events so it doesn't take too long to load into the page. I would then add a lot more to the search functionality:
 
-### `npm start`
+ - Change the filter dropdown menu into checkboxes, so the user can see all the events they are interested in. 
+ - Improve the search function so it doesn't just search by name but also speakers
+ - Allow the user to filter by what day the event is on and what time they happen
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+I also would add a warning when the user clicks 'log out' because it is very simple to accidentally log out as of now, as well as redirect them to another page when they log out to make the action more meaningful.
