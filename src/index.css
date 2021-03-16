@@ -17,6 +17,12 @@ code {
   --text_green: #a2d106;
   --text_black:#383838;
 }
+
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('./coolvetica.ttf');
+}
+
 input {
   outline: none;
 }

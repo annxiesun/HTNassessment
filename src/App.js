@@ -29,15 +29,14 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Link to="/">Home</Link>
-        <Link to="/topics">Topics</Link>
-        <button onClick={()=>{this.login(false)}}>Logout</button>
-        
+        <Link to="/events">Events</Link>
+        {(!this.state.logged_in) ? <Link to="/login">Login</Link> : <button onClick={()=>{this.login(false)}}>Logout</button>}
+
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/login">
             <Login login={this.login}/>
           </Route>
-          <Route path="/topics">
+          <Route path="/events">
             <EventPage logged_in={this.state.logged_in}/>
             
           </Route>

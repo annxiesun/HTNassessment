@@ -1,5 +1,7 @@
 import React, { Component, useState } from 'react';
 import axios from 'axios';
+import Fade from 'react-reveal/Fade';
+import ScrollAnimation from 'react-animate-on-scroll';
 
 import "./EventPage.css"
 import "./SingleEvent.css"
@@ -23,8 +25,57 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 
 
+function SpeakerTag(props) {
+    return <div>
+        <img className="circle" src={props.speaker.profile_pic} />
+        <div>{props.speaker.name}</div>
+    </div>
+}
+
 function SingleEvent(props) {
-    return <div>{props.event.name}</div>
+    let start_time_f = formatDate(props.event.start_time);
+    let end_time_f = formatDate(props.event.end_time);
+
+    let event_type = props.event.event_type;
+
+    let link = (props.logged_in) ? props.event.private_url : props.event.public_url;
+
+    let speakers = []
+    for (let i = 0; i < props.event.speakers.length; i++) {
+        let speaker = props.event.speakers[i];
+        speakers.push(<SpeakerTag speaker={speaker} />)
+    }
+
+    let related = []
+    for (let i = 0; i < props.event.related_events.length; i++) {
+        let r_index = props.event.related_events[i];
+        related.push(<Event event={props.events[r_index]} />)
+    }
+
+    return <div className="s-event-container">
+        <Fade top opposite >
+            <div className="s-event-box">
+
+                <div className={"event_tag " + event_type}>{event_type}</div>
+
+                <div class="title">{props.event.name}</div>
+
+                <div class="time">{start_time_f} {end_time_f}</div>
+
+                <div class="desc">{props.event.description}</div>
+                {speakers}
+
+                <div class="actions">
+                    <button> <UploadOutlined className="upload-icon" /></button>
+                    <button>Check it out</button>
+                </div>
+            </div>
+            <div>
+                <div>Related Events</div>
+                {related}</div>
+        </Fade>
+    </div>
+
 }
 
 function formatDate(date_string) {
@@ -56,40 +107,39 @@ function Event(props) {
 
     let event_type = props.event.event_type;
 
-    let link = (props.logged_in) ? props.event.private_url : props.event.public_url;
+    let link = window.location.origin.toString()+path+"/"+props.event.name.replaceAll(" ", "%20");
 
     return <div>
             <div className="event-block">
-            <a href={`${url}/${props.event.name}`}>
-                <Row>
-                    <Col col={6}>
-                        <div className="time">
-                            {start_time_f}
-                        </div>
-                        <div className="title">
-                            {props.event.name}
-                        </div>
-                    </Col>
-                    
-                    <Col col={6}>
-                        <div className="float-right">
-                            <div className={"event_tag " + event_type}>
-                                {event_type}
+                <a href={`${url}/${props.event.name}`}>
+                    <Row>
+                        <Col col={6}>
+                            <div className="time">
+                                {start_time_f}
                             </div>
-                            <button className="upload float-right" onClick={(e)=>{
-                                e.preventDefault();
-                                copy(link)}}>
-                            <UploadOutlined className="upload-icon"
-                             />
-                            </button>
-                        </div>
-                    </Col>
-                </Row>
+                            <div className="title">
+                                {props.event.name}
+                            </div>
+                        </Col>
+
+                        <Col col={6}>
+                            <div className="float-right">
+                                <div className={"event_tag " + event_type}>
+                                    {event_type}
+                                </div>
+                                <button className="upload float-right" onClick={(e) => {
+                                    e.preventDefault();
+                                    copy(link)
+                                }}>
+                                    <UploadOutlined className="upload-icon"
+                                    />
+                                </button>
+                            </div>
+                        </Col>
+                    </Row>
                 </a>
             </div>
-       
-
-    </div>
+        </div>
 
 }
 
@@ -146,26 +196,41 @@ function EventContainer(props) {
         <Menu.Item key="end_time">End time</Menu.Item>
     </Menu>
 
-    return <div class="event-container"><Row>
-        <Col md={3} className="flex_options">
-            <input className="event-option" value={props.search_term} onChange={props.updateSearch} />
-            <Dropdown className="event-option" overlay={filter_menu} trigger={['click']}>
-                <Button>
-                    Event type <DownOutlined />
-                </Button>
-            </Dropdown>
-            <Dropdown className="event-option" overlay={sort_menu} trigger={['click']}>
-                <Button>
-                    {sortType}<DownOutlined />
-                </Button>
-            </Dropdown>
+    return <div class="event-container">
+        <Row>
 
-        </Col>
 
-        <Col md={9}>
-            {blocks}
-        </Col>
-    </Row></div>
+            <Col md={3}>
+                <Fade bottom cascade>
+                    <div>
+                        <div className="tagline">Find the Event for you</div>
+                        <div className="flex_options">
+                            <input className="event-option" value={props.search_term} onChange={props.updateSearch} />
+                            <Dropdown className="event-option" overlay={filter_menu} trigger={['click']}>
+                                <Button>
+                                    Event type <DownOutlined />
+                                </Button>
+                            </Dropdown>
+                            <Dropdown className="event-option" overlay={sort_menu} trigger={['click']}>
+                                <Button>
+                                    {sortType}<DownOutlined />
+                                </Button>
+                            </Dropdown>
+                        </div>
+                    </div>
+                </Fade>
+            </Col>
+<Col md={1}>
+</Col>
+
+            <Col md={8}>
+                <div>
+                    {blocks}
+                </div>
+
+            </Col>
+        </Row>
+    </div>
 
 }
 
@@ -193,16 +258,17 @@ function CreatePages(props) {
     console.log(props.search_term);
     for (let i = 0; i < a_events.length; i++) {
         routes.push(<Route exact path={`${path}/${a_events[i].name}`}>
-            <SingleEvent event={a_events[i]} />
+            <SingleEvent events={a_events} logged_in={props.logged_in} event={a_events[i]} />
         </Route>)
     }
 
 
     return <Switch>
         <Route exact path={path}>
-            <EventContainer search_term={props.search_term} logged_in = {props.logged_in}
+            <EventContainer search_term={props.search_term} logged_in={props.logged_in}
                 updateSearch={props.updateSearch} handleMenuFilter={props.handleMenuFilter}
                 handleMenuSort={props.handleMenuSort} events={events} all_events={a_events} />
+
         </Route>
 
         {routes}
@@ -312,7 +378,15 @@ class EventPage extends React.Component {
                 //console.log("hi");
 
                 let a_events = response.data.data.events;
-
+                for (let i = 0; i < a_events.length; i++) {
+                    for (let ii = 0; ii < a_events[i].speakers.length; ii++) {
+                        let speaker = a_events[i].speakers[ii]
+                        if(speaker.profile_pic == null) {
+                            let num = Math.floor((Math.random() * 4) + 1); //random num between 1 and 4
+                            speaker.profile_pic = "/images/a"+num+".png"
+                        }
+                    }
+                }
                 this.setState({
                     all_events: sortEvents(a_events, "start_time", true),
                 });

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import "./Login.css"
+import Fade from 'react-reveal/Fade';
 
 const correct_user = "123"
 const correct_pass = "456"
@@ -30,12 +32,18 @@ class Login extends React.Component {
     }
     render() {
       return (
-        <div>
+          <div className="login-c">
+        <Fade bottom opposite >
+        <div className="login-block">
+            <div class="title">Login</div>
+            <div class="label">Username</div>
             <input onChange={this.changeUser} value={this.state.username}/>
+            <div class="label">Password</div>
             <input onChange={this.changePass} value={this.state.password}/>
             <button onClick={this.checkLogin}>Login</button>
             </div>
-  
+  </Fade>
+  </div>
       );
     }
   }

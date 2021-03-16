@@ -27,6 +27,7 @@
 
     .flex_options {
         flex-direction: row;
+
     }
 
     .event-container {
@@ -88,4 +89,10 @@
 
 .tech_talk{
     background-color: var(--bright_cyan);
+}
+
+.tagline {
+    color: white;
+    font-family: Coolvetica;
+    font-size: 1.8em;
 }
