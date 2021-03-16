@@ -1,7 +1,6 @@
 import React, { Component, useState } from 'react';
 import axios from 'axios';
 import Fade from 'react-reveal/Fade';
-import ScrollAnimation from 'react-animate-on-scroll';
 
 import "./EventPage.css"
 import "./SingleEvent.css"
@@ -26,19 +25,22 @@ import Container from 'react-bootstrap/Container'
 
 
 function SpeakerTag(props) {
-    return <div>
+    return <div className="speaker-tag">
         <img className="circle" src={props.speaker.profile_pic} />
-        <div>{props.speaker.name}</div>
+        <div className="speaker-name">{props.speaker.name}</div>
     </div>
 }
 
 function SingleEvent(props) {
     let start_time_f = formatDate(props.event.start_time);
-    let end_time_f = formatDate(props.event.end_time);
+    let end_time_f = formatTime(props.event.end_time);
 
     let event_type = props.event.event_type;
 
     let link = (props.logged_in) ? props.event.private_url : props.event.public_url;
+
+    let { path, url } = useRouteMatch();
+    let share_link = window.location.origin.toString()+path+"/"+props.event.name.replaceAll(" ", "%20");
 
     let speakers = []
     for (let i = 0; i < props.event.speakers.length; i++) {
@@ -56,22 +58,23 @@ function SingleEvent(props) {
         <Fade top opposite >
             <div className="s-event-box">
 
-                <div className={"event_tag " + event_type}>{event_type}</div>
+                <div className={"event_tag " + event_type}>{event_type.replaceAll("_"," ")}</div>
 
                 <div class="title">{props.event.name}</div>
 
-                <div class="time">{start_time_f} {end_time_f}</div>
+                <div class="time">{start_time_f} −, {end_time_f}</div>
 
                 <div class="desc">{props.event.description}</div>
+                <div class="subtitle">Speakers</div>
                 {speakers}
 
                 <div class="actions">
-                    <button> <UploadOutlined className="upload-icon" /></button>
-                    <button>Check it out</button>
+                    <button class="upload-s" onClick={() => copy(share_link)}> <UploadOutlined className="upload-icon" /></button>
+                    <a href={link}><button class="go-btn">Check it out</button></a>
                 </div>
             </div>
             <div>
-                <div>Related Events</div>
+                <div class="subtitle rel">Related Events</div>
                 {related}</div>
         </Fade>
     </div>
@@ -86,7 +89,14 @@ function formatDate(date_string) {
 
     let new_date = date.toLocaleString('en-US', day_options)
     let new_time = date.toLocaleString('en-US', time_options)
-    return new_date + "• " + new_time;
+    return new_date + " • " + new_time;
+}
+
+function formatTime(date_string){
+    let date = new Date(parseInt(date_string))
+    let time_options = { hour: 'numeric', minute: 'numeric', timeZoneName: 'short' }
+    let new_time = date.toLocaleString('en-US', time_options)
+    return new_time;
 }
 
 function copy(text) {
@@ -125,7 +135,7 @@ function Event(props) {
                         <Col col={6}>
                             <div className="float-right">
                                 <div className={"event_tag " + event_type}>
-                                    {event_type}
+                                    {event_type.replaceAll("_"," ")}
                                 </div>
                                 <button className="upload float-right" onClick={(e) => {
                                     e.preventDefault();
@@ -162,6 +172,10 @@ function getEventTypes(events) {
     let event_types = [...new Set(all_event_types)]
 
     let menu = []
+    menu.push(<Menu.Item key="show_all">
+        Show All
+    </Menu.Item>)
+    
     for (let i = 0; i < event_types.length; i++) {
         let name = formatOption(event_types[i]);
         menu.push(<Menu.Item key={event_types[i]}>
@@ -174,7 +188,8 @@ function getEventTypes(events) {
 
 function EventContainer(props) {
 
-    const [sortType, setSortType] = useState("start_time");
+    const [sortType, setSortType] = useState("Start Time");
+    const [filterType, setFilterType] = useState("Show All");
 
     let blocks = [];
     for (let i = 0; i < props.events.length; i++) {
@@ -183,7 +198,9 @@ function EventContainer(props) {
 
     let menuOptions = getEventTypes(props.all_events);
 
-    let filter_menu = <Menu onClick={props.handleMenuFilter} trigger={['click']}>
+    let filter_menu = <Menu onClick={(e)=>{
+        setFilterType(formatOption(e.key))
+        props.handleMenuFilter(e)}} trigger={['click']}>
         {menuOptions}
     </Menu>
 
@@ -208,7 +225,7 @@ function EventContainer(props) {
                             <input className="event-option" value={props.search_term} onChange={props.updateSearch} />
                             <Dropdown className="event-option" overlay={filter_menu} trigger={['click']}>
                                 <Button>
-                                    Event type <DownOutlined />
+                                    {filterType}<DownOutlined />
                                 </Button>
                             </Dropdown>
                             <Dropdown className="event-option" overlay={sort_menu} trigger={['click']}>
@@ -251,14 +268,15 @@ function CreatePages(props) {
         events = a_events
     }
 
+    if(!(props.filter === "show_all")) {
     events = filterEvents(events, "event_type", props.filter)
+    }
     events = sortEvents(events, props.sort[0], props.sort[1])
     events = searchEvents(events, props.search_term)
 
-    console.log(props.search_term);
     for (let i = 0; i < a_events.length; i++) {
         routes.push(<Route exact path={`${path}/${a_events[i].name}`}>
-            <SingleEvent events={a_events} logged_in={props.logged_in} event={a_events[i]} />
+            <SingleEvent key = {"event"+i} events={a_events} logged_in={props.logged_in} event={a_events[i]} />
         </Route>)
     }
 
@@ -311,7 +329,7 @@ function searchEvents(events, value) {
         return events;
     }
 
-    let result = events.filter(event => event.name.search(value) > -1);
+    let result = events.filter(event => (event.name.toLowerCase().includes(value.toLowerCase())));
     return result;
 }
 
@@ -338,7 +356,6 @@ class EventPage extends React.Component {
     }
 
     handleMenuFilter(e) {
-        console.log(e.key)
         this.setState({ filter: e.key })
     }
 
@@ -357,7 +374,7 @@ class EventPage extends React.Component {
                 <div>
 
                 </div>
-                <CreatePages updateSearch={this.updateSearch} search_term={this.state.search_term}
+                <CreatePages key="page" updateSearch={this.updateSearch} search_term={this.state.search_term}
                     handleMenuFilter={this.handleMenuFilter} handleMenuSort={this.handleMenuSort} filter={this.state.filter}
                     sort={this.state.sort} logged_in={this.props.logged_in} shown_events={this.state.shown_events}
                     all_events={this.state.all_events} />
@@ -373,10 +390,6 @@ class EventPage extends React.Component {
 
         axios.get("https://api.hackthenorth.com/v3/graphql?query={ events { id name event_type permission start_time end_time description speakers { name profile_pic } public_url private_url related_events } }", { params })
             .then(response => {
-
-                //console.log(JSON.stringify(response.data.data.events));
-                //console.log("hi");
-
                 let a_events = response.data.data.events;
                 for (let i = 0; i < a_events.length; i++) {
                     for (let ii = 0; ii < a_events[i].speakers.length; ii++) {

@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import Login from "./components/login/Login"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from 'react-bootstrap/Navbar'
+import ScrollAnimation from 'react-animate-on-scroll';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,13 +30,16 @@ class App extends React.Component {
 
   render() {
     return (
+      <div>
       <Router>
-        <Link to="/events">Events</Link>
-        {(!this.state.logged_in) ? <Link to="/login">Login</Link> : <button onClick={()=>{this.login(false)}}>Logout</button>}
+        <Navbar className="navbar justify-content-end">
+        <Link className="navbtn " to="/events"><button className="navbtn">Events</button></Link>
+        {(!this.state.logged_in) ? <Link to="/login"><button className="navbtn">Login</button></Link> : <button className="navbtn" onClick={()=>{this.login(false)}}>Logout</button>}
+      </Navbar>
 
         <Switch>
           <Route exact path="/login">
-            <Login login={this.login}/>
+            <Login logged_in={this.state.logged_in} login={this.login}/>
           </Route>
           <Route path="/events">
             <EventPage logged_in={this.state.logged_in}/>
@@ -42,6 +47,10 @@ class App extends React.Component {
           </Route>
         </Switch>
       </Router>
+      <div className="footer">
+        <div className="text">Hackathon Global 2021 ©</div>
+      </div>
+      </div>
 
     );
   }

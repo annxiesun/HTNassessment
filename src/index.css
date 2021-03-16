@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Raleway',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,6 +33,7 @@ body {
   -webkit-animation: AnimationName 30s ease infinite;
   -moz-animation: AnimationName 30s ease infinite;
   animation: AnimationName 30s ease infinite;
+  
 }
 
 @-webkit-keyframes AnimationName {
@@ -56,4 +57,33 @@ a:hover {
 }
 a {
   text-decoration: none !important;
+}
+
+.navbtn{
+  background: none !important;
+  color: white;
+  font-family: Coolvetica;
+  margin-right: 1em;
+  border: none;
+  font-size: 20px;
+
+}
+
+.navbtn:hover {
+ 
+}
+.navbar {
+  margin: 1em;
+  align-content: right !important;
+  text-align: right;
+}
+
+.footer {
+  height: 5em;
+}
+
+.footer .text {
+  text-align: center;
+  color: white;
+  font-family: Coolvetica;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./Login.css"
 import Fade from 'react-reveal/Fade';
+import { Redirect } from 'react-router';
 
 const correct_user = "123"
 const correct_pass = "456"
@@ -33,6 +34,7 @@ class Login extends React.Component {
     render() {
       return (
           <div className="login-c">
+               {(!this.props.logged_in) ?
         <Fade bottom opposite >
         <div className="login-block">
             <div class="title">Login</div>
@@ -42,7 +44,7 @@ class Login extends React.Component {
             <input onChange={this.changePass} value={this.state.password}/>
             <button onClick={this.checkLogin}>Login</button>
             </div>
-  </Fade>
+               </Fade> : <Redirect to="/events" /> }
   </div>
       );
     }
