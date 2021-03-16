@@ -1,3 +1,4 @@
+### Project Link: https://htnfrontendchallenge2021.herokuapp.com/
 ### Question 1
 I used React in my application because I like how it makes it simple to think of the site in smaller pieces & update the screen as needed. For the functionality and development, I first break down a page into multiple components. For example in the page that shows all the events, I broke it down into a card-view version that shows the basic information & a sub-page that shows all the information.  I also think about parent-child relationships & where each state should be located so it can be passed down. For example, the logged_in state is at the App level (the highest), because it affects both the login page & the event page. 
 
