@@ -8,6 +8,7 @@ import {
   useRouteMatch
 } from "react-router-dom";
 import Login from "./components/login/Login"
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -30,14 +31,15 @@ class App extends React.Component {
       <Router>
         <Link to="/">Home</Link>
         <Link to="/topics">Topics</Link>
-
+        <button onClick={()=>{this.login(false)}}>Logout</button>
+        
         <Switch>
           <Route exact path="/">
             <Login login={this.login}/>
           </Route>
           <Route path="/topics">
             <EventPage logged_in={this.state.logged_in}/>
-            <button onClick={()=>{this.login(false)}}>Logout</button>
+            
           </Route>
         </Switch>
       </Router>

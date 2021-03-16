@@ -1,0 +1,91 @@
+.event-container {
+    margin: 8em;
+}
+.event-option {
+    display: block !important;
+    width: 100%;
+    margin: 0 auto !important;
+    margin-bottom: 2em !important;
+    border: none !important;
+    border-radius: 0.2em;
+    font-size: 1.2em !important;
+    height:2em !important;
+
+    text-align: left !important;
+
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.05) !important; 
+    box-shadow: 0px 20px 25px 0px rgba(0,0,0,0.05) !important;
+    
+}
+
+.flex_options {
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 800px) {
+
+    .flex_options {
+        flex-direction: row;
+    }
+
+    .event-container {
+        margin: 8em 1em;
+    }
+  }
+
+.event-block {
+    padding: 0.8em;
+    width: 100%;
+    background: white;
+    margin: 0.3em;
+    border-radius: 0.2em;
+}
+
+.event-block .title {
+    font-size: 1.5em;
+    text-overflow: ellipsis !important;
+    max-width: 20em ;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 400;
+    color:var(--text_black);
+    
+}
+
+
+.event-block .time {
+    font-size: 0.75em;
+    font-weight: 700;
+    color:var(--text_green);
+}
+.event-block .upload {
+    margin-top: 1.7em;
+    background: white;
+    border: none;
+    z-index: 30;
+}
+
+.upload-icon {
+    font-size: 1.3em;
+}
+
+.event_tag{
+    border-radius: 0.2em;
+    padding: 0.1em 0.3em;
+    color:var(--text_black);
+    font-weight: 700;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.activity {
+    background-color: var(--bright_green);
+}
+.workshop {
+    background-color: yellow;
+}
+
+.tech_talk{
+    background-color: var(--bright_cyan);
+}
