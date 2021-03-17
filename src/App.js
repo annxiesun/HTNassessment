@@ -1,4 +1,5 @@
 import EventPage from './components/events/EventPage'
+import Landing from "./components/landing/Landing"
 import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
@@ -38,6 +39,9 @@ class App extends React.Component {
       </Navbar>
 
         <Switch>
+        <Route exact path="/">
+        <Landing/>
+        </Route>
           <Route exact path="/login">
             <Login logged_in={this.state.logged_in} login={this.login}/>
           </Route>

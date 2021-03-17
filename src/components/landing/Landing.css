@@ -1,0 +1,10 @@
+.landing-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.landing-container .title {
+    font-family: Coolvetica;
+    font-size: 8em;
+    color: white;
+}
