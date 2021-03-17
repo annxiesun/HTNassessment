@@ -188,8 +188,8 @@ function getEventTypes(events) {
 
 function EventContainer(props) {
 
-    const [sortType, setSortType] = useState("Start Time");
-    const [filterType, setFilterType] = useState("Show All");
+    const [sortType, setSortType] = useState("Sort by: Start Time");
+    const [filterType, setFilterType] = useState("Show All Types");
 
     let blocks = [];
     for (let i = 0; i < props.events.length; i++) {
@@ -210,7 +210,6 @@ function EventContainer(props) {
     }}>
         <Menu.Item key="name">Name</Menu.Item>
         <Menu.Item key="start_time" >Start time</Menu.Item>
-        <Menu.Item key="end_time">End time</Menu.Item>
     </Menu>
 
     return <div class="event-container">

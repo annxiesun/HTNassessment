@@ -5,6 +5,20 @@
 
 .landing-container .title {
     font-family: Coolvetica;
-    font-size: 8em;
+    font-size: 7em;
     color: white;
+    margin-left: 10vw;
+    margin-top: 6vw;
+}
+
+.landing-container .desc {
+    font-family: Raleway;
+    font-size: 3em;
+    color: white;
+    font-weight: 200;
+    margin-left: 10vw;
+}
+
+.title-col {
+    padding: 5em;
 }

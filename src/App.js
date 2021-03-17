@@ -20,41 +20,43 @@ class App extends React.Component {
     this.state = {
       logged_in: JSON.parse(localStorage.getItem('login'))
     }
-    this.login=this.login.bind(this);
+    this.login = this.login.bind(this);
   }
 
   login(bool) {
-    localStorage.setItem( 'login', bool);
+    localStorage.setItem('login', bool);
     console.log(localStorage.getItem('login'))
-    this.setState({logged_in: bool});
+    this.setState({ logged_in: bool });
   }
 
   render() {
     return (
       <div>
-      <Router>
-        <Navbar className="navbar justify-content-end">
-        <Link className="navbtn " to="/events"><button className="navbtn">Events</button></Link>
-        {(!this.state.logged_in) ? <Link to="/login"><button className="navbtn">Login</button></Link> : <button className="navbtn" onClick={()=>{this.login(false)}}>Logout</button>}
-      </Navbar>
+      <div>
+        <Router>
+          <Navbar className="navbar justify-content-end">
+            <Link className="navbtn " to="/"><button className="navbtn">Home</button></Link>
+            <Link className="navbtn " to="/events"><button className="navbtn">Events</button></Link>
+            {(!this.state.logged_in) ? <Link to="/login"><button className="navbtn">Login</button></Link> : <button className="navbtn" onClick={() => { this.login(false) }}>Logout</button>}
+          </Navbar>
 
-        <Switch>
-        <Route exact path="/">
-        <Landing/>
-        </Route>
-          <Route exact path="/login">
-            <Login logged_in={this.state.logged_in} login={this.login}/>
-          </Route>
-          <Route path="/events">
-            <EventPage logged_in={this.state.logged_in}/>
-            
-          </Route>
-        </Switch>
-      </Router>
-      <div className="footer">
-        <div className="text">Hackathon Global 2021 ©</div>
+          <Switch>
+            <Route exact path="/">
+              <Landing />
+            </Route>
+            <Route exact path="/login">
+              <Login logged_in={this.state.logged_in} login={this.login} />
+            </Route>
+            <Route path="/events">
+              <EventPage logged_in={this.state.logged_in} />
+            </Route>
+          </Switch>
+        </Router>
       </div>
-      </div>
+              <div className="footer">
+              <div className="text">Hackathon Global 2021 ©</div>
+            </div>
+            </div>
 
     );
   }
